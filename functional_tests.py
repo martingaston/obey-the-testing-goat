@@ -10,6 +10,11 @@ class NewVisitorTest(unittest.TestCase):
     def tearDown(self):
         self.browser.quit()
 
+    def check_for_row_in_list_table(self, row_text):
+        table = self.browser.find_element_by_id("id_list_table")
+        rows = table.find_elements_by_tag_name("tr")
+        self.assertIn(row_text, [row.text for row in rows])
+
     def test_unittest_is_working(self):
         self.assertTrue(15 % 3 == 0)
 
@@ -36,7 +41,7 @@ class NewVisitorTest(unittest.TestCase):
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
 
-        self.assertIn("1: Buy peacock feathers", [row.text for row in rows])
+        self.check_for_row_in_list_table("1: Buy peacock feathers")
 
         # There is still a text box where she can enter another item. She inputs 'use peacock feathers to make a fly'
         inputbox = self.browser.find_element_by_id('id_new_item')
@@ -47,8 +52,9 @@ class NewVisitorTest(unittest.TestCase):
         # The page updates again and both items are in the list
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertIn("1: Buy peacock feathers", [row.text for row in rows])
-        self.assertIn("2: Use peacock feathers to make a fly", [row.text for row in rows])
+
+        self.check_for_row_in_list_table("1: Buy peacock feathers")
+        self.check_for_row_in_list_table("2: Use peacock feathers to make a fly")
 
         # Edith wonders if the site will remember her list, and notices a unique URL has been generated for her. There is text that explains this.
         self.fail("Finish the test!")
