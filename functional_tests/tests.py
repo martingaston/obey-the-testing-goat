@@ -52,10 +52,6 @@ class NewVisitorTest(LiveServerTestCase):
 
         # When she hits 'Enter' the page updates and now '#1: Buy peacock feathers' appears as an item in the to-do list
         inputbox.send_keys(Keys.ENTER)
-
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-
         self.wait_for_row_in_list_table("1: Buy peacock feathers")
 
         # There is still a text box where she can enter another item. She inputs 'use peacock feathers to make a fly'
@@ -64,9 +60,6 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox.send_keys(Keys.ENTER)
 
         # The page updates again and both items are in the list
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-
         self.wait_for_row_in_list_table("1: Buy peacock feathers")
         self.wait_for_row_in_list_table("2: Use peacock feathers to make a fly")
 
