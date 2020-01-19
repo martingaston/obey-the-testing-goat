@@ -31,9 +31,6 @@ class NewVisitorTest(LiveServerTestCase):
                     raise e
                 time.sleep(0.5)
 
-    def test_unittest_is_working(self):
-        self.assertTrue(15 % 3 == 0)
-
     def test_can_start_a_list_for_one_user(self):
         # Edith has heard of a cool new online todo application. She visits the homepage.
         self.browser.get(self.live_server_url)
