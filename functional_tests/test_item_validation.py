@@ -7,25 +7,22 @@ class ItemValidationTest(FunctionalTest):
         self.browser.get(self.live_server_url)
         self.get_item_input_box().send_keys(Keys.ENTER)
 
-        # The home page refreshes and an error is now displayed saying items cannot be blank
-        self.wait_for(lambda: self.assertEqual(
-            self.browser.find_element_by_css_selector('.has-error').text,
-            "You can't have an empty list item"
-        ))
+        # The browser intercepts the request, and does not load the list page
+        self.wait_for(lambda: self.browser.find_element_by_css_selector('#id_text:invalid'))
 
-        # She tries again with text for the item, which works
+        # She starts typing some test for the new item and the error disappears
         self.get_item_input_box().send_keys('Buy milk')
+        self.wait_for(lambda: self.browser.find_element_by_css_selector('#id_text:valid'))
+
+        # And she can submit it successfully
         self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Buy milk')
 
         # She now tries to submit a second blank list item
         self.get_item_input_box().send_keys(Keys.ENTER)
 
-        # A similar warning as before is displayed on the list page
-        self.wait_for(lambda: self.assertEqual(
-            self.browser.find_element_by_css_selector('.has-error').text,
-            "You can't have an empty list item"
-        ))
+        # The browser once again says this is invalid
+        self.wait_for(lambda: self.browser.find_element_by_css_selector('#id_text:invalid'))
 
         # And she corrects the error by submitting a todo with text
         self.get_item_input_box().send_keys('Make tea')
